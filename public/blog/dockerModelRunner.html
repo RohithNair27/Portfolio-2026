@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Docker Model Runner - Rohith Kizhakekkara</title>
+    <script>
+      (function() {
+        const savedTheme = localStorage.getItem("theme");
+        const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+        if (savedTheme === "dark" || (!savedTheme && prefersDark)) {
+          document.documentElement.classList.add("dark");
+        }
+      })();
+    </script>
+    <link rel="stylesheet" href="../styles.css" />
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <a href="../index.html" class="site-title">Rohith Kizhakekkara</a>
+        <span class="site-subtitle">
+          M.S. Software Engineering at UMD
+          <span title="Fear the Turtle">🐢</span> (Go Terps!)
+        </span>
+
+        <nav style="display: flex; align-items: center">
+          <a href="../index.html">About</a>
+          <a href="../blog.html">Blog</a>
+          <a href="mailto:rohithk@umd.edu">Contact</a>
+          <button
+            id="theme-toggle"
+            aria-label="Toggle Dark Mode"
+            style="
+              background: none;
+              border: none;
+              cursor: pointer;
+              padding: 0;
+              margin-left: 10px;
+              color: var(--text-primary);
+              display: flex;
+              align-items: center;
+            "
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="feather feather-moon"
+            >
+              <path
+                d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"
+              ></path>
+            </svg>
+          </button>
+        </nav>
+      </header>
+
+      <main>
+        <article class="blog-post">
+          <h1>Docker Model Runner</h1>
+          <div class="post-meta">
+            <span class="date">January 2026</span> |
+            <span class="category">AI / DevOps</span>
+          </div>
+
+          <hr />
+
+          <p>My first laptop, an Acer Aspire, has been in my family for nearly six years. It has been through many hard times and would give its best when I wanted to run anything from Matlab to even Android Studio on it. But after seeing my friend running DeepSeek on his laptop, I also wanted to run an LLM on my system and become the next Sam Altman. However, my system crashed as soon as I loaded the model and ran it.</p>
+
+          <p>Then I discovered something called Docker Model Runner. With this, you can run models on your system by using an image from Docker.</p>
+
+          <h2>What is Docker Model Runner?</h2>
+          
+          <p>Docker Model Runner is a feature in Docker Desktop that allows you to run Large Language Models (LLMs) locally using the same workflow you use for containers. It treats AI models as OCI artifacts, meaning you can pull and run them just like Docker images. The best part is that it connects directly to your computer's hardware (like your GPU) to make the model run much faster than it would inside a traditional virtual machine.</p>
+            <img src="../images/docker_model_runner/docker_logo.png" alt="Docker Model Runner" style="width: 100%; margin: 20px 0; border-radius: 8px;" />
+
+
+          <h2>How to run an LLM model on your system</h2>
+          <p>Below are the steps of how even you can run an LLM model on your system:</p>
+          
+          <ol>
+            <li>First, make sure you have Docker installed on your system.</li>
+            <li>Then, go to Docker settings and enable Docker Model Runner.</li>
+          <img src="../images/docker_model_runner/docker.png" alt="Docker Model Runner" style="width: 100%; margin: 20px 0; border-radius: 8px;" />
+
+            <li>Once this is done, we can pull the Docker model using the command below:
+              <pre><code>docker model pull ai/smollm2:135M-Q4_K_M</code></pre>
+              (I am using this as it is the smallest model I could find on Docker Hub.)
+              <p>It takes some time to download the image.</p>
+              <img src="../images/docker_model_runner/Model pulled successfully.png" alt="Model Pulled Successfully" style="width: 100%; margin: 20px 0; border-radius: 8px;" />
+            </li>
+            <li>After this, using the command below, we can run the model locally in Docker:
+              <pre><code>docker model run ai/smollm2:135M-Q4_K_M</code></pre>
+            </li>
+          </ol>
+
+          <p>Now you can communicate with this model! :))))</p>
+          <img src="../images/docker_model_runner/Chat.png" alt="Chat with Model" style="width: 100%; margin: 20px 0; border-radius: 8px;" />
+
+        </article>
+      </main>
+
+      <footer>&copy; 2026 Rohith Kizhakekkara. All rights reserved.</footer>
+    </div>
+    <script src="../js/global.js"></script>
+  </body>
+</html>

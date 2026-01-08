@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Input is Evil - Rohith Kizhakekkara</title>
+    <script>
+      (function() {
+        const savedTheme = localStorage.getItem("theme");
+        const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+        if (savedTheme === "dark" || (!savedTheme && prefersDark)) {
+          document.documentElement.classList.add("dark");
+        }
+      })();
+    </script>
+    <link rel="stylesheet" href="../styles.css" />
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <a href="../index.html" class="site-title">Rohith Kizhakekkara</a>
+        <span class="site-subtitle">
+          M.S. Software Engineering at UMD
+          <span title="Fear the Turtle">🐢</span> (Go Terps!)
+        </span>
+
+        <nav style="display: flex; align-items: center">
+          <a href="../index.html">About</a>
+          <a href="../blog.html">Blog</a>
+          <a href="mailto:rohithk@umd.edu">Contact</a>
+          <button
+            id="theme-toggle"
+            aria-label="Toggle Dark Mode"
+            style="
+              background: none;
+              border: none;
+              cursor: pointer;
+              padding: 0;
+              margin-left: 10px;
+              color: var(--text-primary);
+              display: flex;
+              align-items: center;
+            "
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="feather feather-moon"
+            >
+              <path
+                d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"
+              ></path>
+            </svg>
+          </button>
+        </nav>
+      </header>
+
+      <main>
+        <article class="blog-post">
+          <h1>Input is Evil: Mastering the Attack Surface</h1>
+          <div class="post-meta">
+            <span class="date">October 1, 2025</span> |
+            <span class="category">Secure Software Engineering</span>
+          </div>
+
+          <hr />
+
+          <p>
+            If there is one mantra to keep in mind while building Secure
+            Software, it is this:
+            <strong>Never trust the input.</strong>
+          </p>
+
+          <div class="security-stats">
+            <p>
+              We often assume that everyone in a team should be responsible for
+              security, but the numbers tell a different story. According to the
+              <a
+                href="https://www.securecodewarrior.com/press-releases/secure-code-warrior-survey-finds-86-of-developers-do-not-view-application-security-as-a-top-priority"
+                target="_blank"
+              >
+                Secure Code Warrior "State of Developer-Driven Security"
+              </a>
+              report,
+              <strong
+                >86% of developers do not view application security as a top
+                priority</strong
+              >. Most developers know security is important, but their main
+              focus is always shipping code.
+            </p>
+            <p>
+              This is why, in Fall 2025 at UMD, I took a course called
+              <strong>Introduction to Secure Coding</strong> taught by
+              <a
+                href="https://www.linkedin.com/in/gananand-kini/"
+                target="_blank"
+              >
+                Gananand Kini</a
+              >. In this blog, I focus on only a small part of the whole course
+              related to <strong>Input attacks</strong> and how to defend
+              against them.
+            </p>
+          </div>
+
+          <h2>1. Defining the Attack Surface</h2>
+          <p>
+            If we are thinking about securing a system, first we have to define
+            an <strong>attack surface</strong>. An attack surface consists of
+            all the entry points and vulnerabilities an attacker can use to
+            infiltrate a system. In simple words, it is like a house; if the
+            house has more windows and doors, it's easier for the robber
+            (hacker) to enter the house and steal our money (information, and
+            even money in some cases). The larger the attack surface, the easier
+            it is to exploit and damage the system.
+          </p>
+          <p>Inputs come from everywhere, not just forms:</p>
+          <img src="../images/attack_area.png" />
+          <ul>
+            <li>
+              <strong>Environment Variables:</strong> An attacker controlling
+              environment variables.
+            </li>
+            <li>
+              <strong>File Descriptors & Content:</strong> Even metadata or file
+              names cannot be trusted.
+            </li>
+            <li>
+              <strong>APIs & Sockets:</strong> Network-based inputs are classic
+              entry points.
+            </li>
+          </ul>
+
+          <h2>2. The Usual Suspects: Top Injection Flaws</h2>
+          <p>
+            The CWE Top 10 list is dominated by input validation weaknesses. In
+            this blog, we will discuss some of them.
+          </p>
+          <img src="../images/top_ten_cwe.png" />
+
+          <h3>SQL Injection (CWE-89)</h3>
+
+          <p>
+            SQL injection occurs when a user is asked for an input, and instead
+            of sending a number or string, the user provides an SQL command, and
+            we mistakenly run it in the database.
+          </p>
+          <ul>
+            <li>
+              <strong>Example case:</strong> The infamous "<a
+                href="https://www.twingate.com/blog/tips/Heartland%20Payment%20Systems-data-breach"
+                target="_blank"
+                >Heartland Payment Systems</a
+              >" case, where SQL injection was used to compromise computers
+              processing payment transactions. This resulted in the theft of as
+              many as <strong>100 million</strong> debit and credit cards.
+            </li>
+            <li>
+              <h4>How does SQL injection work?</h4>
+              <p>
+                A user could enter the following SQL query into an input field:
+              </p>
+              <pre><code>SELECT * FROM Users WHERE ID = 10 OR 1=1;</code></pre>
+              <p>
+                Here, only one condition needs to pass for the SELECT query to
+                run. Since 1=1 always returns true, this query will return all
+                the users from the Users table. This is a significant problem,
+                as the Users table might contain personal information like
+                names, passwords, and phone numbers.
+              </p>
+            </li>
+            <li>
+              <h4>How to prevent it?</h4>
+
+              <p><strong>Mistake: </strong></p>
+              <pre><code class="language-python">
+query = f"SELECT * FROM users WHERE username = '{user_input}'"
+session.execute(query)</code></pre>
+
+              <p>
+                To fix this, we can use <strong>SQLAlchemy's ORM</strong>. In
+                SQLAlchemy, we can use method chaining, which can parameterize
+                the query. It treats the user input as data and not as
+                executable code.
+              </p>
+
+              <p><strong>Fix:</strong></p>
+              <pre><code class="language-python">
+stmt = select(User).where(User.username == user_input)
+result = session.execute(stmt)</code></pre>
+            </li>
+          </ul>
+
+          <h3>Cross-Site Scripting (CWE-79)</h3>
+          <p>
+            In theory, web browsers use something called the
+            <a
+              href="https://developer.mozilla.org/en-US/docs/Web/Security/Defenses/Same-origin_policy"
+              target="_blank"
+              >same-origin policy</a
+            >; this keeps different sites away from each other and does not
+            allow one site to access objects or credentials from another site.
+            However, hackers can trick the site into executing malicious code
+            within its own context, as though it were same-origin. This is
+            Cross-Site Scripting.
+          </p>
+          <ul>
+            <li>
+              <strong>Example case:</strong> As a
+              <a
+                href="https://www.cnet.com/tech/gaming/fortnite-had-a-security-vulnerability-that-let-hackers-take-over-accounts/"
+                target="_blank"
+                >Fortnite</a
+              >
+              player myself, it's quite disheartening to see that the game you
+              love could have been attacked by hackers. In 2019, while the game
+              was at its peak with 200 million users, they had a retired page
+              that had an XSS vulnerability that allowed attackers to gain
+              unauthorized access to the data of all Fortnite users. This was
+              discovered by security researchers from Check Point, hence saving
+              my data (and my precious V-Bucks) from getting stolen.
+            </li>
+          </ul>
+          <li><h4>How do we prevent it?</h4></li>
+
+          <p><strong>Mistake: </strong></p>
+          <pre><code class="language-python">
+# Never render user input directly without escaping it first!
+# If user.name is "&lt;script&gt;alert(1)&lt;/script&gt;", this runs it.
+return f"&lt;h1&gt;Welcome back, {user.name}!&lt;/h1&gt;"
+          </code></pre>
+
+          <p><strong>Fix: </strong></p>
+          <pre><code class="language-python">
+import html
+
+# Modern templating engines do this automatically, but manually:
+safe_name = html.escape(user.name)
+return f"&lt;h1&gt;Welcome back, {safe_name}!&lt;/h1&gt;"
+          </code></pre>
+
+          <h3>Path Traversal (CWE-22)</h3>
+          <p>This is also known as the "Dot-Dot-Slash" attack.</p>
+          <p>
+            Imagine you go to a library and ask the librarian for a book. You
+            say, "I'd like 'Harry Potter', please." The librarian goes to the
+            shelf and hands it to you. Normal, right?
+          </p>
+          <p>
+            Now, imagine you say, "I'd like '.. / .. / .. / private-office /
+            safe-combination.txt'." If the librarian were a computer, they might
+            literally walk out of the book section, go up the stairs into the
+            manager's office, and hand you the secret file. That is Path
+            Traversal.
+          </p>
+
+          <h4>How do we prevent it?</h4>
+          <p>
+            Attackers use `../` to climb up and out of the directory you
+            intended them to stay in.
+          </p>
+
+          <p><strong>Mistake:</strong></p>
+          <pre><code class="language-python">
+filename = request.args.get('file')
+# DANGEROUS: If filename is "../../etc/passwd", you just leaked system passwords.
+with open(f"/var/www/uploads/{filename}", "r") as f:
+    return f.read()
+          </code></pre>
+
+          <p><strong>Fix:</strong></p>
+          <pre><code class="language-python">
+import os
+
+filename = request.args.get('file')
+# This strips any path info. "../../etc/passwd" becomes just "passwd"
+safe_filename = os.path.basename(filename)
+
+with open(f"/var/www/uploads/{safe_filename}", "r") as f:
+    return f.read()
+          </code></pre>
+
+          <h2>Conclusion</h2>
+          <p>
+            A very simple conclusion: <strong>Never trust the input.</strong>
+          </p>
+        </article>
+      </main>
+
+      <footer>&copy; 2025 Rohith Kizhakekkara. All rights reserved.</footer>
+    </div>
+    <script src="../js/global.js"></script>
+  </body>
+</html>
