@@ -10,8 +10,8 @@ const BlogPost = () => {
 
   const blogComponents = {
     "docker-model-runner": DockerModelRunner,
-    eventLoop: EventLoop,
-    secureCoding: SecureCoding,
+    "javascript-event-loop": EventLoop,
+    "secure-coding-practices": SecureCoding,
   };
 
   const BlogComponent = blogComponents[slug];

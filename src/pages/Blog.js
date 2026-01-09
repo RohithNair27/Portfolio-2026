@@ -13,14 +13,14 @@ const Blog = () => {
     },
     {
       id: 2,
-      slug: "eventLoop",
+      slug: "javascript-event-loop",
       title: "Event Loop",
       date: "23 Jun 2025",
       category: "JavaScript",
     },
     {
       id: 3,
-      slug: "secureCoding",
+      slug: "secure-coding-practices",
       title: "Input is Evil: Mastering the Attack Surface",
       date: "01 Oct 2025",
       category: "Secure Software Engineering",

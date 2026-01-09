@@ -88,6 +88,10 @@ header {
   padding-bottom: 1rem;
 }
 
+html.dark header {
+  border-bottom: none;
+}
+
 .site-title {
   font-size: 1.5rem;
   font-weight: 700;
@@ -389,17 +393,18 @@ body.projects-page header {
   max-width: 680px;
   margin: 0 auto;
   width: 100%;
-  padding: 2rem 1rem;
+  padding: 0 1rem;
   margin-bottom: 1.5rem;
   border-bottom: 1px solid var(--border-color);
+  padding-bottom: 1rem;
+}
+
+html.dark body.projects-page header {
+  border-bottom: none;
 }
 
 body.projects-page header .site-title {
   font-size: 1.5rem;
-}
-
-body.projects-page header nav {
-  margin-top: 1rem;
 }
 
 body.projects-page header nav a {
