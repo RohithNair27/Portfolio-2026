@@ -8,7 +8,7 @@ const Blog = () => {
       id: 1,
       slug: "docker-model-runner",
       title: "Docker Model Runner",
-      date: "01 Jan 2026",
+      date: "01 May 2025",
       category: "AI/Machine learning",
     },
     {
@@ -31,8 +31,8 @@ const Blog = () => {
 
   return (
     <Layout>
-      <h1>Blog Posts</h1>
-      <ul className="post-list">
+      <h1 className="animate-in">Blog Posts</h1>
+      <ul className="post-list animate-in">
         {sortedPosts.map((post) => (
           <li key={post.id}>
             <span className="post-date">{post.date}</span>

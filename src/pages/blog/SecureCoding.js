@@ -3,11 +3,11 @@ import React from 'react';
 const SecureCoding = () => {
   return (
     <article className="blog-post">
-      <header>
+      <header className="animate-in">
         <h1>Input is Evil: Mastering the Attack Surface</h1>
         <div className="post-meta">
-          <span>01 Oct 2025</span>
-          <span className="separator">·</span>
+          <span>01 Oct 2025</span>{" "}
+          <span className="separator">|</span>{" "}
           <span>Secure Software Engineering</span>
         </div>
       </header>
@@ -31,11 +31,13 @@ const SecureCoding = () => {
 
       <p>Inputs come from everywhere, not just forms:</p>
 
-      <img 
-        src="/images/attack_area.png" 
-        alt="Attack Surface Areas"
-        style={{ width: "100%", margin: "20px 0", borderRadius: "8px" }}
-      />
+      <div className="animate-in">
+        <img 
+          src="/images/attack_area.png" 
+          alt="Attack Surface Areas"
+          style={{ width: "100%", margin: "20px 0", borderRadius: "8px" }}
+        />
+      </div>
 
       <ul>
         <li><strong>Environment Variables:</strong> An attacker controlling environment variables.</li>
@@ -48,11 +50,13 @@ const SecureCoding = () => {
         The CWE Top 10 list is dominated by input validation weaknesses. In this blog, we will discuss some of them.
       </p>
 
-      <img 
-        src="/images/top_ten_cwe.png" 
-        alt="Top 10 CWE List"
-        style={{ width: "100%", margin: "20px 0", borderRadius: "8px" }}
-      />
+      <div className="animate-in">
+        <img 
+          src="/images/top_ten_cwe.png" 
+          alt="Top 10 CWE List"
+          style={{ width: "100%", margin: "20px 0", borderRadius: "8px" }}
+        />
+      </div>
 
       <h3>SQL Injection (CWE-89)</h3>
       <p>

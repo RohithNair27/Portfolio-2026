@@ -3,7 +3,7 @@ import React from "react";
 const EventLoop = () => {
   return (
     <article className="blog-post">
-      <header>
+      <header className="animate-in">
         <h1>Event Loop</h1>
         <div className="post-meta">
           <span>June 2025 </span>
@@ -21,11 +21,13 @@ const EventLoop = () => {
         a task waits in the background, the rest of your code keeps running
         smoothly.
       </p>
-      <img
-        src="/images/event_loop/javascript_icon.png"
-        alt="JavaScript Event Loop"
-        style={{ width: "100%", margin: "20px 0", borderRadius: "8px" }}
-      />
+      <div className="animate-in">
+        <img
+          src="/images/event_loop/javascript_icon.png"
+          alt="JavaScript Event Loop"
+          style={{ width: "100%", margin: "20px 0", borderRadius: "8px" }}
+        />
+      </div>
 
       <h2>So what is the Event Loop?</h2>
       <p>
