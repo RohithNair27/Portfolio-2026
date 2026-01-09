@@ -4,25 +4,19 @@ import Footer from './Footer';
 
 const Layout = ({ children, className = '' }) => {
   useEffect(() => {
-    // Animation logic
-    const selector = "h1, h2, h3, p, ul, ol, li, img, pre, .project-card, blockquote, hr, .post-meta";
-    const candidates = Array.from(document.querySelectorAll(selector));
+    // Skip animation for projects page as it uses inline CSS animations
+    if (className.includes('projects-page')) {
+      return;
+    }
 
-    const topLevelElements = candidates.filter((el) => {
-      return !candidates.some((parent) => parent !== el && parent.contains(el));
+    // Simple animation logic for other pages - only animate main sections
+    const elements = document.querySelectorAll('h1, h2, p:not(.logo-box p), ul:not(.skills-list), blockquote, .post-list');
+    
+    elements.forEach((element, index) => {
+      element.style.animationDelay = `${index * 0.1}s`;
+      element.classList.add('animate-in');
     });
-
-    topLevelElements.sort((a, b) => {
-      const rectA = a.getBoundingClientRect();
-      const rectB = b.getBoundingClientRect();
-      return rectA.top - rectB.top; 
-    });
-
-    topLevelElements.forEach((element, index) => {
-      element.classList.add("animate-in");
-      element.style.animationDelay = index * 0.1 + "s";
-    });
-  }, []);
+  }, [className]);
 
   return (
     <div className={`container ${className}`}>

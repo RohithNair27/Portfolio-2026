@@ -1,5 +1,5 @@
-import { useEffect } from 'react';
 import Layout from '../components/Layout';
+import VideoPlayer from '../components/VideoPlayer';
 
 const Projects = () => {
   const projects = [
@@ -27,7 +27,7 @@ const Projects = () => {
       // features: ["Real-time reflection", "Wave simulation"],
       category: "Mobile development",
       date: "Mar 10, 2025",
-      githubUrl: "https://github.com/yourusername/native-music-player",
+      githubUrl: "https://github.com/RohithNair27/Native-audio",
     },
     {
       video: "/assets/Agent_news.mov",
@@ -64,49 +64,13 @@ const Projects = () => {
     return new Date(b.date) - new Date(a.date);
   });
 
-  useEffect(() => {
-    // Animation logic - run only once with a delay to allow videos to load
-    const runAnimation = () => {
-      const selector = "h1, h2, h3, p, ul, ol, li, img, pre, .project-card, blockquote, hr, .post-meta";
-      const candidates = Array.from(document.querySelectorAll(selector));
-
-      const topLevelElements = candidates.filter((el) => {
-        return !candidates.some((parent) => parent !== el && parent.contains(el));
-      });
-
-      topLevelElements.sort((a, b) => {
-        const rectA = a.getBoundingClientRect();
-        const rectB = b.getBoundingClientRect();
-        return rectA.top - rectB.top; 
-      });
-
-      topLevelElements.forEach((element, index) => {
-        // Only add animation if it hasn't been added already
-        if (!element.classList.contains("animate-in")) {
-          element.classList.add("animate-in");
-          element.style.animationDelay = index * 0.1 + "s";
-          
-          // Add 'animated' class after animation completes to prevent re-animation
-          element.addEventListener('animationend', () => {
-            element.classList.add('animated');
-          }, { once: true });
-        }
-      });
-    };
-
-    // Run animation after a short delay to allow videos to load and layout to stabilize
-    const animationTimeout = setTimeout(runAnimation, 100);
-
-    return () => {
-      clearTimeout(animationTimeout);
-    };
-  }, []);
+  // No useEffect needed - using pure CSS animations
 
   return (
     <Layout className="projects-page">
       <section className="demos-section">
-        <h2>Projects</h2>
-        <p>List of projects that I made outisde of work.</p>
+        <h2 className="animate-in" style={{ animationDelay: '0s' }}>Projects</h2>
+        <p className="animate-in" style={{ animationDelay: '0.1s' }}>List of projects that I made outisde of work.</p>
         <div className="demos-grid">
           {sortedProjects.map((project, index) => (
             <a 
@@ -114,18 +78,23 @@ const Projects = () => {
               href={project.githubUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="project-card demo-card"
+              className="project-card demo-card animate-in"
+              style={{ animationDelay: `${0.2 + index * 0.1}s` }}
             >
               <div className="demo-media">
-                <video
-                  autoPlay
-                  loop
-                  muted
-                  playsInline
-                  poster={project.poster}
-                >
-                  <source src={project.video} type="video/mp4" />
-                </video>
+                {project.video ? (
+                  <VideoPlayer
+                    src={project.video}
+                    poster={project.poster}
+                    alt={project.content}
+                  />
+                ) : (
+                  <img 
+                    src={project.poster} 
+                    alt={project.content}
+                    style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                  />
+                )}
               </div>
               <div className="demo-content">
                 <p>{project.content}</p>
