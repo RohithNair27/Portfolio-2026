@@ -1,6 +1,5 @@
-import React, { useEffect } from 'react';
-import Header from '../components/Header';
-import Footer from '../components/Footer';
+import { useEffect } from 'react';
+import Layout from '../components/Layout';
 
 const Projects = () => {
   const projects = [
@@ -66,9 +65,6 @@ const Projects = () => {
   });
 
   useEffect(() => {
-    // Add projects-page class for styling
-    document.body.classList.add('projects-page');
-    
     // Animation logic - run only once with a delay to allow videos to load
     const runAnimation = () => {
       const selector = "h1, h2, h3, p, ul, ol, li, img, pre, .project-card, blockquote, hr, .post-meta";
@@ -102,60 +98,55 @@ const Projects = () => {
     const animationTimeout = setTimeout(runAnimation, 100);
 
     return () => {
-      document.body.classList.remove('projects-page');
       clearTimeout(animationTimeout);
     };
   }, []);
 
   return (
-    <div className="container">
-      <Header />
-      <main>
-        <section className="demos-section">
-          <h2>Projects</h2>
-          <p>List of projects that I am proud of.</p>
-          <div className="demos-grid">
-            {sortedProjects.map((project, index) => (
-              <a 
-                key={index} 
-                href={project.githubUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="project-card demo-card"
-              >
-                <div className="demo-media">
-                  <video
-                    autoPlay
-                    loop
-                    muted
-                    playsInline
-                    poster={project.poster}
-                  >
-                    <source src={project.video} type="video/mp4" />
-                  </video>
+    <Layout className="projects-page">
+      <section className="demos-section">
+        <h2>Projects</h2>
+        <p>List of projects that I made outisde of work.</p>
+        <div className="demos-grid">
+          {sortedProjects.map((project, index) => (
+            <a 
+              key={index} 
+              href={project.githubUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="project-card demo-card"
+            >
+              <div className="demo-media">
+                <video
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
+                  poster={project.poster}
+                >
+                  <source src={project.video} type="video/mp4" />
+                </video>
+              </div>
+              <div className="demo-content">
+                <p>{project.content}</p>
+                {project.features && (
+                  <ul>
+                    {project.features.map((feature, featureIndex) => (
+                      <li key={featureIndex}>{feature}</li>
+                    ))}
+                  </ul>
+                )}
+                <div className="demo-meta">
+                  <span>{project.category}</span>
+                  <span className="separator">·</span>
+                  <span>{project.date}</span>
                 </div>
-                <div className="demo-content">
-                  <p>{project.content}</p>
-                  {project.features && (
-                    <ul>
-                      {project.features.map((feature, featureIndex) => (
-                        <li key={featureIndex}>{feature}</li>
-                      ))}
-                    </ul>
-                  )}
-                  <div className="demo-meta">
-                    <span>{project.category}</span>
-                    <span className="separator">·</span>
-                    <span>{project.date}</span>
-                  </div>
-                </div>
-              </a>
-            ))}
-          </div>
-        </section>
-      </main>
-      <Footer />
-    </div>
+              </div>
+            </a>
+          ))}
+        </div>
+      </section>
+    </Layout>
   );
 };
 

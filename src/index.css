@@ -379,17 +379,14 @@ pre {
 }
 
 /* --- PROJECTS DEMO PAGE LAYOUT --- */
-/* Full-width container for demo page (overrides normal container width) */
-body.projects-page .container {
+/* Projects page using Layout component - adjust container for full-width demos */
+.container.projects-page {
   max-width: 100%;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  margin: 0;
+  padding: 2rem 0;
 }
 
 /* Header stays constrained to readable width and centered */
-body.projects-page header {
+.container.projects-page header {
   max-width: 680px;
   margin: 0 auto;
   width: 100%;
@@ -399,125 +396,19 @@ body.projects-page header {
   padding-bottom: 1rem;
 }
 
-html.dark body.projects-page header {
+html.dark .container.projects-page header {
   border-bottom: none;
 }
 
-body.projects-page header .site-title {
-  font-size: 1.5rem;
-}
-
-body.projects-page header nav a {
-  margin-right: 15px;
-  text-decoration: none;
-  color: var(--link-color);
-  font-weight: 500;
-}
-
-body.projects-page header nav a:hover {
-  text-decoration: underline;
-}
-
 /* Main content full-width */
-body.projects-page main {
+.container.projects-page main {
   width: 100%;
   flex: 1;
-  padding: 0 1rem;
-}
-
-/* Section header for projects intro - constrained to 680px */
-body.projects-page main > h1 {
-  max-width: 680px;
-  margin: 0 auto 1rem;
-  font-size: 2rem;
-}
-
-body.projects-page main > p {
-  max-width: 680px;
-  margin: 0 auto 3rem;
-  color: var(--text-secondary);
-}
-
-/* Three-column grid layout - full width */
-.projects-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1.5rem;
-  max-width: 100%;
-  margin: 0 auto;
-  width: 100%;
-  padding: 0 1rem;
-}
-
-/* Project card styling */
-.project-card {
-  display: flex;
-  flex-direction: column;
-  background: var(--bg-color); /* Was #fff, assuming cards map to bg in light mode, but maybe distinct? */
-  border: 1px solid var(--border-color);
-  border-radius: 8px;
-  padding: 1.5rem;
-  transition: all 0.3s ease;
-  height: 100%;
-  cursor: pointer;
-  text-decoration: none;
-  color: inherit;
-}
-
-.project-card:hover {
-  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.15); /* Softer, deeper shadow */
-  transform: translateY(-4px); /* Slightly more lift */
-  background-color: var(--card-bg-hover);
-}
-
-.project-card h3 {
-  font-size: 1.2rem;
-  margin: 0 0 0.5rem 0;
-  color: var(--text-heading);
-  font-weight: 600;
-}
-
-.project-card .tech-stack {
-  font-size: 0.85rem;
-  color: var(--link-color);
-  font-weight: 500;
-  margin-bottom: 1rem;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-}
-
-.project-card .tech-tag {
-  background: var(--tag-bg);
-  padding: 0.25rem 0.75rem;
-  border-radius: 12px;
-  font-size: 0.8rem;
-}
-
-.project-card p {
-  flex: 1;
-  font-size: 0.95rem;
-  line-height: 1.6;
-  color: var(--text-secondary); /* or #555 -> secondary/tertiary */
-  margin: 0 0 1rem 0;
-}
-
-.project-card .project-link {
-  color: var(--link-color);
-  text-decoration: none;
-  font-weight: 500;
-  align-self: flex-start;
-  margin-top: auto;
-  transition: color 0.2s ease;
-}
-
-.project-card .project-link:hover {
-  color: var(--link-hover);
-  text-decoration: underline;
+  padding: 0;
 }
 
 /* Footer full-width */
-body.projects-page footer {
+.container.projects-page footer {
   width: 100%;
   max-width: 1200px;
   margin: 4rem auto 0;
@@ -529,46 +420,46 @@ body.projects-page footer {
 
 /* Responsive: Two columns on tablet */
 @media (max-width: 968px) {
-  .projects-grid {
+  .demos-grid {
     grid-template-columns: repeat(2, 1fr);
     gap: 1.25rem;
   }
 
-  body.projects-page main {
-    padding: 2rem 1rem;
+  .container.projects-page main {
+    padding: 0;
   }
 
-  body.projects-page main > h1 {
+  .demos-section h2 {
     font-size: 1.8rem;
   }
 }
 
 /* Responsive: One column on mobile */
 @media (max-width: 480px) {
-  .projects-grid {
+  .demos-grid {
     grid-template-columns: 1fr;
     gap: 1rem;
   }
 
-  body.projects-page main {
-    padding: 1.5rem 1rem;
+  .container.projects-page main {
+    padding: 0;
   }
 
-  body.projects-page main > h1 {
+  .demos-section h2 {
     font-size: 1.5rem;
     margin-bottom: 0.5rem;
   }
 
-  body.projects-page main > p {
+  .demos-section p {
     margin-bottom: 2rem;
   }
 
-  .project-card {
-    padding: 1rem;
+  .demo-card {
+    padding: 0;
   }
 
-  .project-card h3 {
-    font-size: 1.1rem;
+  .demo-content {
+    padding: 1rem;
   }
 }
 
@@ -577,6 +468,26 @@ body.projects-page footer {
   margin-top: 0;
   width: 100%;
   max-width: 100%;
+}
+
+/* Project card styling */
+.project-card {
+  display: flex;
+  flex-direction: column;
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  height: 100%;
+  cursor: pointer;
+  text-decoration: none;
+  color: inherit;
+}
+
+.project-card:hover {
+  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.15);
+  transform: translateY(-4px);
+  background-color: var(--card-bg-hover);
 }
 
 /* CSS Masonry Layout for Demos */

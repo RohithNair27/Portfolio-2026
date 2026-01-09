@@ -116,7 +116,23 @@ const Header = () => {
         <Link to="/">About</Link>
         <Link to="/blog">Blog</Link>
         <Link to="/projects">Projects</Link>
-        <a href="mailto:rohithk@umd.edu">Contact</a>
+        <a 
+          href="mailto:rohithk@umd.edu"
+          onClick={(e) => {
+            // Fallback for systems without email client
+            if (!window.confirm('This will open your email client to send an email to rohithk@umd.edu. Continue?')) {
+              e.preventDefault();
+              // Copy email to clipboard as fallback
+              navigator.clipboard.writeText('rohithk@umd.edu').then(() => {
+                alert('Email address copied to clipboard: rohithk@umd.edu');
+              }).catch(() => {
+                alert('Email: rohithk@umd.edu');
+              });
+            }
+          }}
+        >
+          Contact
+        </a>
         <button
           onClick={toggleTheme}
           aria-label="Toggle Dark Mode"
